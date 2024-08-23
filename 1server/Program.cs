@@ -9,7 +9,7 @@ class Server
     {
         Console.ForegroundColor = ConsoleColor.DarkBlue;
         Console.CursorVisible = false;
-        IPAddress ipAddress = IPAddress.Parse("192.168.0.103");
+        IPAddress ipAddress = IPAddress.Parse("192.168.0.1");
         int port = 11000;
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 

@@ -43,11 +43,25 @@ class Server
         int bytesRec = await handler.ReceiveAsync(new ArraySegment<byte>(bytes), SocketFlags.None);
         data += Encoding.UTF8.GetString(bytes, 0, bytesRec);
 
-        Console.WriteLine($"At {DateTime.Now.ToShortTimeString()} received from {((IPEndPoint)handler.RemoteEndPoint).Address}: {data}");
+        string response;
+        if (data.ToLower().Contains("time"))
+        {
+            response = DateTime.Now.ToString("HH:mm:ss");
+        }
+        else if (data.ToLower().Contains("date"))
+        {
+            response = DateTime.Now.ToString("yyyy-MM-dd");
+        }
+        else
+        {
+            response = "Invalid request";
+        }
 
-        string response = "Hello, client!";
         byte[] msg = Encoding.UTF8.GetBytes(response);
         await handler.SendAsync(new ArraySegment<byte>(msg), SocketFlags.None);
+
+        Console.WriteLine($"At {DateTime.Now.ToShortTimeString()} received from {((IPEndPoint)handler.RemoteEndPoint).Address}: {data}");
+        Console.WriteLine($"Sent response: {response}");
 
         handler.Shutdown(SocketShutdown.Both);
         handler.Close();
